@@ -1,0 +1,18 @@
+"""
+Requirements for SafeLine
+"""
+
+# No external dependencies - SafeLine uses only Python standard library
+# This ensures maximum portability and security
+
+# For testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# For development/documentation
+sphinx>=4.5.0
+sphinx-rtd-theme>=1.0.0
+
+# Optional: For enhanced performance
+ujson>=5.0.0  # Faster JSON parsing
+pydantic>=1.9.0  # Data validation

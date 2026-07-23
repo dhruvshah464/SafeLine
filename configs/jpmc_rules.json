@@ -1,0 +1,126 @@
+{
+  "compliance_rules": {
+    "max_transaction_amount": 1000000,
+    "max_daily_transfers": 5000000,
+    "max_transactions_per_minute": 10,
+    "pii_sensitivity_level": "high",
+    "restricted_endpoints": [
+      "DELETE /api/users",
+      "DELETE /api/ledger",
+      "PATCH /api/ledger",
+      "DELETE /api/accounts"
+    ],
+    "required_approvals": {
+      "external_transfer": ["manager", "compliance"],
+      "database_delete": ["dba", "compliance"],
+      "api_modification": ["tech_lead", "security"],
+      "ledger_access": ["finance_lead"]
+    }
+  },
+  "rbac": {
+    "roles": {
+      "admin": {
+        "description": "Full system access",
+        "permissions": ["database_read", "database_write", "ledger_access", "external_call", "email_send", "user_management", "audit_access"]
+      },
+      "compliance_officer": {
+        "description": "Compliance and audit oversight",
+        "permissions": ["database_read", "ledger_access", "audit_access", "email_send"]
+      },
+      "manager": {
+        "description": "Senior operations with approval authority",
+        "permissions": ["database_read", "database_write", "external_call", "email_send"]
+      },
+      "analyst": {
+        "description": "Standard data operations",
+        "permissions": ["database_read", "database_write", "external_call", "email_send"]
+      },
+      "trader": {
+        "description": "Trading operations only",
+        "permissions": ["database_read", "database_write", "external_call"]
+      },
+      "intern": {
+        "description": "Read-only access",
+        "permissions": ["database_read"]
+      },
+      "auditor": {
+        "description": "Read-only audit access",
+        "permissions": ["database_read", "audit_access"]
+      }
+    },
+    "max_transaction_by_role": {
+      "admin": 10000000,
+      "manager": 5000000,
+      "analyst": 1000000,
+      "trader": 500000,
+      "intern": 0,
+      "compliance_officer": 0,
+      "auditor": 0
+    }
+  },
+  "data_classification": {
+    "field_classifications": {
+      "ssn": "RESTRICTED",
+      "social_security": "RESTRICTED",
+      "credit_card": "RESTRICTED",
+      "account_number": "CONFIDENTIAL",
+      "routing_number": "CONFIDENTIAL",
+      "account_balance": "CONFIDENTIAL",
+      "salary": "CONFIDENTIAL",
+      "email": "INTERNAL",
+      "phone": "INTERNAL",
+      "name": "INTERNAL",
+      "address": "INTERNAL",
+      "transaction_id": "PUBLIC",
+      "status": "PUBLIC",
+      "timestamp": "PUBLIC"
+    },
+    "classification_rules": {
+      "RESTRICTED": {
+        "allow_external_access": false,
+        "require_approval": true,
+        "allow_logging": false,
+        "max_role": "compliance_officer"
+      },
+      "CONFIDENTIAL": {
+        "allow_external_access": false,
+        "require_approval": true,
+        "allow_logging": true,
+        "max_role": "analyst"
+      },
+      "INTERNAL": {
+        "allow_external_access": false,
+        "require_approval": false,
+        "allow_logging": true,
+        "max_role": "intern"
+      },
+      "PUBLIC": {
+        "allow_external_access": true,
+        "require_approval": false,
+        "allow_logging": true,
+        "max_role": "intern"
+      }
+    }
+  },
+  "api_risk_detection": {
+    "suspicious_endpoints": ["/admin", "/export", "/bulk", "/dump", "/backup", "/migrate", "/raw"],
+    "external_domains": ["*.external.com", "*.offshore.io", "*.darkweb.onion"],
+    "exfiltration_patterns": {
+      "large_batch_threshold": 100,
+      "rapid_request_threshold": 20,
+      "sensitive_field_keywords": ["ssn", "password", "secret", "credit_card", "token"]
+    }
+  },
+  "approved_endpoints": [
+    {"method": "GET", "path": "/api/transactions", "requires_auth": true},
+    {"method": "GET", "path": "/api/accounts", "requires_auth": true},
+    {"method": "POST", "path": "/api/transactions", "requires_auth": true},
+    {"method": "GET", "path": "/api/ledger", "requires_auth": true},
+    {"method": "GET", "path": "/api/compliance/status", "requires_auth": true},
+    {"method": "POST", "path": "/api/reports", "requires_auth": true},
+    {"method": "GET", "path": "/api/*/details", "requires_auth": true},
+    {"method": "POST", "path": "/api/payments/charge", "requires_auth": true},
+    {"method": "POST", "path": "/api/payments/refund", "requires_auth": true},
+    {"method": "GET", "path": "/api/payments/balance", "requires_auth": true}
+  ]
+}

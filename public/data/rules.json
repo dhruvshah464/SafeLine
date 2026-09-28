@@ -1,0 +1,6 @@
+[
+  { "id": "safeline.finance.deny_large_charges", "name": "Deny Large Financial Charges", "severity": "CRITICAL", "trigger": "amount > 50000", "file": "policies/finance.rego" },
+  { "id": "safeline.network.egress_whitelist", "name": "Egress Network Whitelist", "severity": "HIGH", "trigger": "not allowed_domains[input.host]", "file": "policies/network.rego" },
+  { "id": "safeline.pii.redact_ssn", "name": "Redact Social Security Numbers", "severity": "HIGH", "trigger": "regex.match(\"[0-9]{3}-[0-9]{2}-[0-9]{4}\")", "file": "policies/pii.rego" },
+  { "id": "safeline.db.block_delete", "name": "Block Destructive DB Actions", "severity": "HIGH", "trigger": "method == 'DELETE'", "file": "policies/db.rego" }
+]

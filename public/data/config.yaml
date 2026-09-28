@@ -1,0 +1,17 @@
+version: "1.0"
+proxy:
+  port: 8080
+  target_url: "https://api.internal"
+  tls:
+    enabled: true
+    cert_file: "/etc/safeline/certs/tls.crt"
+
+engine:
+  policy_dir: "./policies"
+  strict_mode: true
+  timeout_ms: 100
+
+audit:
+  enabled: true
+  backend: "postgres"
+  connection_string: "${DATABASE_URL}"

@@ -1,0 +1,5 @@
+[
+  { "label": "Total Intercepts (24h)", "value": "1,240,591", "trend": "+12.5%" },
+  { "label": "Avg Latency", "value": "0.8ms", "trend": "-0.1ms" },
+  { "label": "Rules Loaded", "value": "14,500+", "trend": "0" }
+]

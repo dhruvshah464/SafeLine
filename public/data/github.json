@@ -1,0 +1,10 @@
+{
+  "deployments": [
+    { "env": "Production", "status": "SUCCESS" },
+    { "env": "Staging", "status": "SUCCESS" }
+  ],
+  "commits": [
+    { "message": "feat: add robust pii redaction" },
+    { "message": "fix: update rego policy schema" }
+  ]
+}
